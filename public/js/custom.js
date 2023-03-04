@@ -88,8 +88,8 @@ function closeNav() {
   //Variables on page load
   var $myCarousel = $("#carouselExampleIndicators"),
     $firstAnimatingElems = $myCarousel
-    .find(".carousel-item:first")
-    .find("[data-animation ^= 'animated']");
+      .find(".carousel-item:first")
+      .find("[data-animation ^= 'animated']");
 
   //Initialize carousel
   $myCarousel.carousel();
@@ -126,7 +126,7 @@ $(document).ready(function () {
 /* select flag js */
 
 function onChangeCallback(ctr) {
-  console.log("The country was changed: " + ctr);
+  ("The country was changed: " + ctr);
   //$("#selectionSpan").text(ctr);
 }
 
@@ -185,7 +185,7 @@ function allEventListners() {
   // toggler icon click event
   navToggler.addEventListener('click', togglerClick);
   // nav links click event
-  navLinks.forEach( elem => elem.addEventListener('click', navLinkClick));
+  navLinks.forEach(elem => elem.addEventListener('click', navLinkClick));
 }
 
 // togglerClick function
@@ -196,7 +196,7 @@ function togglerClick() {
 
 // navLinkClick function
 function navLinkClick() {
-  if(navMenu.classList.contains('open')) {
+  if (navMenu.classList.contains('open')) {
     navToggler.click();
   }
 }
