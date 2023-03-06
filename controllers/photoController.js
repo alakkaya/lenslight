@@ -9,15 +9,14 @@ const createPhoto = async (req, res) => {
             use_filename: true,
             folder: "lenslight"
         })
-
-    console.log("rESULT", result);
-
+    // console.log("result", result); public_id gelir
     try {
         await Photo.create({
             name: req.body.name,
             description: req.body.description,
             user: res.locals.user._id,
-            url: result.secure_url
+            url: result.secure_url,
+            image_id: result.public_id
         })
 
         fs.unlinkSync(req.files.image.tempFilePath)
@@ -55,10 +54,68 @@ const getAllPhotos = async (req, res) => {
 const getAPhoto = async (req, res) => {
     try {       //params: urlde gözüken parametreler
         const photo = await Photo.findById({ _id: req.params.id }).populate("user")
+
+        let isOwner = false;
+        if (res.locals.user) {
+            isOwner = photo.user.equals(res.locals.user._id)
+        }
         res.status(200).render("photo", {
             photo,
-            link: "photos"
+            link: "photos",
+            isOwner
         })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error,
+        })
+    }
+}
+
+const deletePhoto = async (req, res) => {
+    try {       //params: urlde gözüken parametreler
+        const photo = await Photo.findById(req.params.id)
+        const photoId = photo.image_id
+
+        await cloudinary.uploader.destroy(photoId)
+        await Photo.findByIdAndRemove({ _id: req.params.id })
+        res.status(200).redirect("/users/dashboard")
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error,
+        })
+    }
+}
+
+const updatePhoto = async (req, res) => {
+    try {
+        const photo = await Photo.findById(req.params.id)
+
+        if (req.files) {
+            const photoId = photo.image_id
+            await cloudinary.uploader.destroy(photoId)
+            const result = await cloudinary.uploader.upload(
+                req.files.image.tempFilePath,
+                {
+                    use_filename: true,
+                    folder: "lenslight"
+                })
+
+            photo.url = result.secure_url
+            photo.image_id = result.public_id
+
+            fs.unlinkSync(req.files.image.tempFilePath)
+
+        }
+
+        photo.name = req.body.name;
+        photo.description = req.body.description;
+
+        photo.save()
+
+        res.status(200).redirect(`/photos/${req.params.id}`)
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -69,5 +126,4 @@ const getAPhoto = async (req, res) => {
 
 
 
-
-export { createPhoto, getAllPhotos, getAPhoto };
+export { createPhoto, getAllPhotos, getAPhoto, deletePhoto, updatePhoto };

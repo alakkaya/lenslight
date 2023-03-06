@@ -11,6 +11,8 @@ router.get('/about', pageController.getAboutPage)
 router.get('/register', pageController.getRegisterPage)
 router.get('/login', pageController.getLoginPage)
 router.get('/logout', pageController.getLogout)
+router.get('/contact', pageController.getContactPage)
+router.post('/contact', pageController.sendMail)
 
 
 export default router

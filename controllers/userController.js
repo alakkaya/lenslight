@@ -78,7 +78,8 @@ const getDashboardPage = async (req, res) => {
     ])
     res.render("dashboard", {
         link: "dashboard",
-        photos
+        photos,
+        user
     })
 }
 
@@ -100,11 +101,17 @@ const getAllUsers = async (req, res) => {
 const getAUser = async (req, res) => {
     try {
         const user = await User.findById({ _id: req.params.id })
+
+        const inFollowers = user.followers.some((follower) => {
+            return follower.equals(res.locals.user._id)
+        })
+
         const photos = await Photo.find({ user: user._id })
         res.status(200).render("user", {
             user,
             photos,
-            link: "users"
+            link: "users",
+            inFollowers
         })
     } catch (error) {
         return res.status(500).json({
@@ -132,10 +139,7 @@ const follow = async (req, res) => {
             { new: true }
         )
 
-        return res.status(200).json({
-            success: true,
-            user
-        })
+        res.status(200).redirect(`/users/${req.params.id}`)
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -162,10 +166,7 @@ const unfollow = async (req, res) => {
             { new: true }
         )
 
-        res.status(200).json({
-            success: true,
-            user
-        })
+        res.status(200).redirect(`/users/${req.params.id}`)
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -182,6 +183,7 @@ export {
     getDashboardPage,
     getAllUsers,
     getAUser,
+    createToken,
     follow,
     unfollow,
 };

@@ -42,15 +42,14 @@
 
         </div>
       </div>
-      <!-- end customers  -->
-
+      <!-- end customers  -->              
+      <% if (photos.length > 0 ) { %>
       <div class="gallery">
         <div class="container_with">
            <div class="row">
               <div class="col-md-12">
                  <div class="titlepage text_align_center">
-                    <span>03</span>
-                    <h2>Our gallery</h2>
+                    <h2>My Photos</h2>
                  </div>
               </div>
            </div>
@@ -75,14 +74,86 @@
                           </div>
                        </div>
                        <% } %>
-                 <div class="col-md-12">
-                   <a class="plus_btn" href="gallery.html">+</a>
-                 </div>
+                 
+
+
               </div>
            </div>
         </div>
      </div>
+     <% } %>
 
+<% if (user.followers.length > 0 ) { %>
+     <div class="team">
+      <div class="container_with">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage text_align_center">
+                  <h2>FOLLOWERS</h2>
+               </div>
+            </div>
+
+
+            <% for( follower of user.followers ) { %>
+
+            <div class="col-md-4">
+               <div class="team_box text_align_center">
+                  <div class="team_img">
+                    <figure><img src="/images/team1.jpg" alt="#"/></figure>
+                  </div>
+                  <div class="craig">
+                    <h3><%= follower.username %></h3>
+                    <span>PHOTOGRAPHER</span>
+                    <ul class="social_icon ">
+                       <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                       <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                       <li><a href="/users/<%= follower._id %>"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></li>
+                    </ul>
+                  </div>
+               </div>
+            </div>
+            <% } %>
+
+         </div>
+      </div>
+   </div>
+   <% } %>
+  
+   <% if (user.followings.length > 0 ) { %>
+   <div class="team">
+    <div class="container_with">
+       <div class="row">
+          <div class="col-md-12">
+             <div class="titlepage text_align_center">
+                <h2>FOLLOWINGS</h2>
+             </div>
+          </div>
+
+
+          <% for( following of user.followings ) { %>
+
+          <div class="col-md-4">
+             <div class="team_box text_align_center">
+                <div class="team_img">
+                  <figure><img src="/images/team1.jpg" alt="#"/></figure>
+                </div>
+                <div class="craig">
+                  <h4><%= following.username %></h4>
+                  <span>PHOTOGRAPHER</span>
+                  <ul class="social_icon ">
+                     <li><a href="Javascript:void(0)"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                     <li><a href="Javascript:void(0)"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                     <li><a href="/users/<%= following._id %>"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></li>
+                  </ul>
+                </div>
+             </div>
+          </div>
+          <% } %>
+
+       </div>
+    </div>
+ </div>
+ <% } %>
 
       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">

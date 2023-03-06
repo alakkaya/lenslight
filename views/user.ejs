@@ -42,8 +42,12 @@
          <div class="row">
            <div class="col-md-12">
              <div class="text_align_center">
-               <a style="margin:20px auto;" class="read_more" href="/users/<%= user._id %>/follow?_method=PUT">FOLLOW</a>
+
+              <% if (!inFollowers) { %>
+                <a style="margin:20px auto;" class="read_more" href="/users/<%= user._id %>/follow?_method=PUT">FOLLOW</a>
+              <% } else { %>
                <a style="margin:20px auto;" class="read_more" href="/users/<%= user._id %>/unfollow?_method=PUT">UNFOLLOW</a>
+               <% } %>
              </div>
            </div>
          </div>
